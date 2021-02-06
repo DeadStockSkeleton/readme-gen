@@ -18,6 +18,7 @@
   "homepage": "https://github.com/DeadStockSkeleton/readme-gen#readme",
   "dependencies": {
     "inquirer": "^7.3.3",
+    "inquirer-recursive": "0.0.7",
     "jest": "^26.6.3",
     "rxjs": "^6.6.3"
   }
