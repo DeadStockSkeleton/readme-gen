@@ -38,7 +38,7 @@ inquirer
     },
     {
       type: "input",
-      message: "List the Installation (use % to separate): ",
+      message: "List the Installation (use % to separate *no spaces*): ",
       name: "Installation",
       value: "sec",
       when: (checked) => {
@@ -62,7 +62,7 @@ inquirer
     },
     {
       type: "input",
-      message: "Credit(s) (use % to separate): ",
+      message: "Credit(s) (use % to separate *no spaces*): ",
       name: "Credits",
       value: "sec",
       when: (checked) => {
@@ -97,7 +97,7 @@ inquirer
         {
           type: "input",
           name: "desc",
-          message: "List the Features (use % to separate): ",
+          message: "List the Features (use % to separate *no spaces*): ",
           when: (answer) => {
             if (
               answer.Section.includes("features") ||
@@ -111,7 +111,7 @@ inquirer
         {
           type: "input",
           name: "desc",
-          message: "Badge URL (use % to separate): ",
+          message: "Badge URL (use % to separate *no spaces*): ",
           when: (answer) => {
             if (
               answer.Section.includes("badges") ||
@@ -125,7 +125,7 @@ inquirer
         {
           type: "input",
           name: "desc",
-          message: "Contributing (use % to separate): ",
+          message: "Contributing (use % to separate *no spaces*): ",
           when: (answer) => {
             if (
               answer.Section.includes("contributing") ||
@@ -139,7 +139,7 @@ inquirer
         {
           type: "input",
           name: "desc",
-          message: "Tests: (use % to separate): ",
+          message: "Tests: (use % to separate *no spaces*): ",
           when: (answer) => {
             if (
               answer.Section.includes("tests") ||
@@ -169,7 +169,7 @@ inquirer
         {
           type: "input",
           name: "desc",
-          message: "Credit(s) (use % to separate): ",
+          message: "Credit(s) (use % to separate *no spaces*): ",
           when: (answer) => {
             if (
               answer.Section.includes("credits") ||
@@ -197,7 +197,7 @@ inquirer
         {
           type: "input",
           name: "desc",
-          message: "List the Installation (use % to separate): ",
+          message: "List the Installation (use % to separate *no spaces*): ",
           when: (answer) => {
             if (
               answer.Section.includes("installation") ||
@@ -251,17 +251,17 @@ inquirer
     let list = "";
     let tableOfContents = '';
     for (let i = 0; i < data.sections.length; i++) {
-      checkedSection += `## ${data.sections[i]}\n
-        `;
+      checkedSection += `## ${data.sections[i]}
+      \n`;
       if (data[data.sections[i]].indexOf("%") > -1) {
         list = data[data.sections[i]].split("%");
         for (let a = 0; a < list.length; a++) {
-          checkedSection += `${(a + 1 + ". " + list[a]).trim()}\n`;
+          checkedSection += `${(a + 1 + ". " + list[a])}\n`;
         }
       } else {
-        checkedSection += `
-        ${data[data.sections[i]]}
-        `;
+        checkedSection += `${data[data.sections[i]].trim()}\n
+
+`;
       }
       toc.push({
         title: data.sections[i].charAt(0).toUpperCase() + data.sections[i].slice(1),
@@ -276,8 +276,8 @@ inquirer
       };
 
       toc.push({
-          title: data.addedSections[i].Section.charAt(0).toUpperCase() + data.addedSections[i].Section.slice(1),
-          link: data.addedSections[i].Section.toLowerCase(),
+          title: data.addedSections[i].Section.replace(/\b[a-z]/g, (x) => x.toUpperCase()),
+          link: data.addedSections[i].Section.toLowerCase().trim().replace(/\s/g, '_'),
       } )
     }
 
@@ -287,13 +287,13 @@ inquirer
       if (chapters[i].desc.indexOf("%") > -1) {
         secList = chapters[i].desc.split("%");
         for (let a = 0; a < secList.length; a++) {
-          addedSection += `${(a + 1 + ". " + secList[a]).trim()}`;
+          addedSection += `${(a + 1 + ". " + secList[a]).trim().replace(/\s/g, '')}\n`;
         }
       } else{
          addedSection += `
-        ## ${chapters[i].name.charAt(0).toUpperCase() + chapters[i].name.slice(1)}
-
-        ${chapters[i].desc}
+        ## ${chapters[i].name.charAt(0).toUpperCase() + chapters[i].name.slice(1)}\n
+        
+        ${chapters[i].desc}\n
                    
         `; 
       }
@@ -305,8 +305,13 @@ inquirer
         tableOfContents += `* [${toc[z].title}](#${toc[z].link})\n`
     }
     
-    let readmeFormat = `# ${data.project.charAt(0).toUpperCase() + data.project.slice(1)}\n
-    ${tableOfContents}\n${checkedSection}${addedSection}\n`
+    let readmeFormat = `
+# ${data.project.charAt(0).toUpperCase() + data.project.slice(1).trim()}\n
+${tableOfContents.trim()}
+
+${checkedSection.trim()}
+
+${addedSection.trim()}`
       
-      console.log(readmeFormat);
+    fs.appendFile('README.md', readmeFormat, (err) => err ? console.error(err) : console.log('README.md created successfully!'));
   });
