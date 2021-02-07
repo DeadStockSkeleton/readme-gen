@@ -2,6 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+![Gif of Generator](./assets/working.gif)
 ## Table of Contents
 
 * [Features](#features)
@@ -11,7 +12,7 @@
 * [License](#license)
 * [Questions](#questions)
 
-## features
+## Features
 
 1. Makes lists
 2. Makes Table of Contents

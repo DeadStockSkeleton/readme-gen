@@ -193,7 +193,7 @@ inquirer
     } else {
       if (data.addSection.length > 0) {
         for (let q = 0; q < data.addSection.length; q++) {
-          selected += `## ${data.addSection[q].sectionTitle}\n\n`;
+          selected += `## ${data.addSection[q].sectionTitle.charAt(0).toUpperCase() + data.addSection[q].sectionTitle.slice(1)}\n\n`;
           tableOfContents += `* [${
             data.addSection[q].sectionTitle.charAt(0).toUpperCase() +
             data.addSection[q].sectionTitle.slice(1)
